@@ -19,7 +19,7 @@ use Twig\Environment;
 
 final class SecurityWidgetController
 {
-    public function __construct(private EngineInterface|Environment $templatingEngine)
+    public function __construct(private Environment $templatingEngine)
     {
     }
 

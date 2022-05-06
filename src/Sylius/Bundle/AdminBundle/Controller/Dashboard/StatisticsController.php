@@ -22,7 +22,7 @@ use Twig\Environment;
 final class StatisticsController
 {
     public function __construct(
-        private EngineInterface|Environment $templatingEngine,
+        private Environment $templatingEngine,
         private StatisticsDataProviderInterface $statisticsDataProvider
     ) {
     }

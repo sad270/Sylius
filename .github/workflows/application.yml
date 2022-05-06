@@ -32,7 +32,7 @@ jobs:
             fail-fast: false
             matrix:
                 php: ["8.0", "8.1"]
-                symfony: ["^4.4", "^5.4"]
+                symfony: ["^5.4"]
 
         steps:
             -
@@ -45,7 +45,7 @@ jobs:
                     php-version: "${{ matrix.php }}"
                     ini-values: date.timezone=Europe/Warsaw, opcache.enable=1, opcache.enable_cli=0, opcache.memory_consumption=512, opcache.max_accelerated_files=65407, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
                     extensions: intl, gd, opcache, mysql, pdo_mysql
-                    tools: symfony
+                    tools: symfony, composer-require-checker
                     coverage: none
 
             -
@@ -109,6 +109,15 @@ jobs:
                 run: vendor/bin/phpstan analyse
                 if: always() && steps.end-of-setup.outcome == 'success'
 
+            -
+                name: Run ComposerRequireChecker
+                run: |
+                    (cat composer.json | jq '.["autoload-dev"]["psr-4"] |= . + {"Sylius\\Behat\\": "src/Sylius/Behat/"}' | jq 'del(.autoload["psr-4"]["Sylius\\Behat\\"])') > _composer.json
+                    mv _composer.json composer.json
+                    composer dump-autoload
+                    composer-require-checker check --config-file=composer-require-checker.json
+                if: always() && steps.end-of-setup.outcome == 'success'
+
     architecture-tests:
         runs-on: ubuntu-latest
 
@@ -142,7 +151,7 @@ jobs:
             fail-fast: false
             matrix:
                 php: ["8.0", "8.1"]
-                symfony: ["^4.4", "^5.4"]
+                symfony: ["^5.4"]
 
         steps:
             -   uses: actions/checkout@v2
@@ -389,7 +398,7 @@ jobs:
     test-application-without-frontend-mysql:
         runs-on: ubuntu-latest
 
-        name: "Test non-JS application (PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, MySQL ${{ matrix.mysql }})"
+        name: "Test non-JS application (PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, MySQL ${{ matrix.mysql }}, Twig ${{ matrix.twig }})"
 
         timeout-minutes: 25
 
@@ -397,9 +406,17 @@ jobs:
             fail-fast: false
             matrix:
                 php: ["8.0", "8.1"]
-                symfony: ["^4.4", "^5.4"]
-                node: ["14.x"]
+                symfony: ["^5.4"]
+                node: ["14.x", "16.x"]
                 mysql: ["5.7", "8.0"]
+                twig: ["3.x"]
+                include:
+                    -
+                        php: "8.0"
+                        symfony: "^5.4"
+                        node: "14.x"
+                        twig: "2.x"
+                        mysql: "5.7"
 
         env:
             APP_ENV: test_cached
@@ -450,6 +467,12 @@ jobs:
                     key: ${{ runner.os }}-php-${{ matrix.php }}-symfony-${{ matrix.symfony }}-composer-${{ hashFiles('**/composer.json') }}
                     restore-keys: |
                         ${{ runner.os }}-php-${{ matrix.php }}-symfony-${{ matrix.symfony }}-composer-
+
+            -
+                name: Restrict Twig version
+                if: matrix.twig != ''
+                run: |
+                    composer require "twig/twig:${{ matrix.twig }}" --no-update --no-scripts --no-interaction
 
             -
                 name: Install PHP dependencies
@@ -527,8 +550,8 @@ jobs:
             fail-fast: false
             matrix:
                 php: ["8.0", "8.1"]
-                symfony: ["^4.4", "^5.4"]
-                node: ["14.x"]
+                symfony: ["^5.4"]
+                node: ["14.x", "16.x"]
                 mysql: ["5.7", "8.0"]
 
         env:

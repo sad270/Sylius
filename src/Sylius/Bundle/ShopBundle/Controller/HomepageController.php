@@ -20,7 +20,7 @@ use Twig\Environment;
 
 final class HomepageController
 {
-    public function __construct(private EngineInterface|Environment $templatingEngine)
+    public function __construct(private Environment $templatingEngine)
     {
     }
 

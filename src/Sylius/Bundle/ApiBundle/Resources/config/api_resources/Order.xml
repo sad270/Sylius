@@ -39,7 +39,7 @@
                     <attribute name="groups">shop:order:create</attribute>
                 </attribute>
                 <attribute name="openapi_context">
-                    <attribute name="summary">Pickups a new cart. Provided locale code has to be one of available for a particular channel.</attribute>
+                    <attribute name="summary">Pickups a new cart</attribute>
                 </attribute>
             </collectionOperation>
 
@@ -358,16 +358,6 @@
             <subresourceOperation name="adjustments_get_subresource">
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/shop/orders/{tokenValue}/adjustments</attribute>
-            </subresourceOperation>
-
-            <subresourceOperation name="payments_methods_get_subresource">
-                <attribute name="method">GET</attribute>
-                <attribute name="path">/shop/orders/{tokenValue}/payments/{payments}/methods</attribute>
-            </subresourceOperation>
-
-            <subresourceOperation name="shipments_methods_get_subresource">
-                <attribute name="method">GET</attribute>
-                <attribute name="path">/shop/orders/{tokenValue}/shipments/{shipments}/methods</attribute>
             </subresourceOperation>
 
             <subresourceOperation name="items_adjustments_get_subresource">

@@ -34,7 +34,7 @@ final class ContactController
     public function __construct(
         private RouterInterface $router,
         private FormFactoryInterface $formFactory,
-        private EngineInterface|Environment $templatingEngine,
+        private Environment $templatingEngine,
         private ChannelContextInterface $channelContext,
         private CustomerContextInterface $customerContext,
         private LocaleContextInterface $localeContext,

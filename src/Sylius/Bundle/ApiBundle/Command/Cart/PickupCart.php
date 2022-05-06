@@ -15,19 +15,19 @@ namespace Sylius\Bundle\ApiBundle\Command\Cart;
 
 use Sylius\Bundle\ApiBundle\Command\CustomerEmailAwareInterface;
 use Sylius\Bundle\ApiBundle\Command\ChannelCodeAwareInterface;
+use Sylius\Bundle\ApiBundle\Command\LocaleCodeAwareInterface;
 
 /** @experimental */
-class PickupCart implements ChannelCodeAwareInterface, CustomerEmailAwareInterface
+class PickupCart implements ChannelCodeAwareInterface, CustomerEmailAwareInterface, LocaleCodeAwareInterface
 {
-    /** @psalm-immutable
-     * @var string|null */
-    public $tokenValue;
-
     /**
      * @psalm-immutable
      *
      * @var string|null
      */
+    public $tokenValue;
+
+    /** @var string|null */
     public $localeCode;
 
     /** @var string|null */
@@ -38,10 +38,9 @@ class PickupCart implements ChannelCodeAwareInterface, CustomerEmailAwareInterfa
      */
     public $email;
 
-    public function __construct(?string $tokenValue = null, ?string $localeCode = null)
+    public function __construct(?string $tokenValue = null)
     {
         $this->tokenValue = $tokenValue;
-        $this->localeCode = $localeCode;
     }
 
     public function getChannelCode(): ?string
@@ -62,5 +61,15 @@ class PickupCart implements ChannelCodeAwareInterface, CustomerEmailAwareInterfa
     public function setEmail(?string $email): void
     {
         $this->email = $email;
+    }
+
+    public function getLocaleCode(): ?string
+    {
+        return $this->localeCode;
+    }
+
+    public function setLocaleCode(?string $localeCode): void
+    {
+        $this->localeCode = $localeCode;
     }
 }

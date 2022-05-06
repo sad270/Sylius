@@ -29,7 +29,7 @@ final class DashboardController
 {
     public function __construct(
         private ChannelRepositoryInterface $channelRepository,
-        private EngineInterface|Environment $templatingEngine,
+        private Environment $templatingEngine,
         private RouterInterface $router,
         private ?SalesDataProviderInterface $salesDataProvider = null,
         private ?StatisticsDataProviderInterface $statisticsDataProvider = null

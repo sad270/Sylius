@@ -27,7 +27,7 @@ final class CustomerStatisticsController
     public function __construct(
         private CustomerStatisticsProviderInterface $statisticsProvider,
         private RepositoryInterface $customerRepository,
-        private EngineInterface|Environment $templatingEngine
+        private Environment $templatingEngine
     ) {
     }
 

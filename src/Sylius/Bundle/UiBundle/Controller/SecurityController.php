@@ -29,7 +29,7 @@ final class SecurityController
     public function __construct(
         private AuthenticationUtils $authenticationUtils,
         private FormFactoryInterface $formFactory,
-        private EngineInterface|Environment $templatingEngine,
+        private Environment $templatingEngine,
         private AuthorizationCheckerInterface $authorizationChecker,
         private RouterInterface $router
     ) {

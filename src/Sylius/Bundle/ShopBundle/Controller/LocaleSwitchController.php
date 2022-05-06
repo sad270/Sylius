@@ -25,7 +25,7 @@ use Twig\Environment;
 final class LocaleSwitchController
 {
     public function __construct(
-        private EngineInterface|Environment $templatingEngine,
+        private Environment $templatingEngine,
         private LocaleContextInterface $localeContext,
         private LocaleProviderInterface $localeProvider,
         private LocaleSwitcherInterface $localeSwitcher
