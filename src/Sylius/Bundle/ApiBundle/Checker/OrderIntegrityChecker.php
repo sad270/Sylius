@@ -33,7 +33,7 @@ final class OrderIntegrityChecker implements OrderIntegrityCheckerInterface
         foreach ($previousPromotions as $previousPromotion) {
             if (!$order->getPromotions()->contains($previousPromotion)) {
                 throw new \RuntimeException(
-                    sprintf('Order is no longer eligible for this promotion %s.', $previousPromotion->getName())
+                    sprintf('Order is no longer eligible for this promotion %s.', $previousPromotion->getName()),
                 );
             }
         }
