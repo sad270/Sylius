@@ -39,7 +39,7 @@ final class ProductContext implements Context
         private IriConverterInterface $iriConverter,
         private ChannelContextSetterInterface $channelContextSetter,
         private RequestFactoryInterface $requestFactory,
-        private string $apiUrlPrefix
+        private string $apiUrlPrefix,
     ) {
     }
 
@@ -183,7 +183,7 @@ final class ProductContext implements Context
     {
         Assert::true($this->hasProductWithName(
             $this->responseChecker->getCollection($this->client->getLastResponse()),
-            $name
+            $name,
         ));
     }
 
@@ -201,7 +201,7 @@ final class ProductContext implements Context
     public function iShouldSeeAProductWithName(string $name): void
     {
         Assert::true(
-            $this->responseChecker->hasItemWithValue($this->client->getLastResponse(), 'name', $name)
+            $this->responseChecker->hasItemWithValue($this->client->getLastResponse(), 'name', $name),
         );
     }
 
@@ -225,7 +225,7 @@ final class ProductContext implements Context
     {
         Assert::false($this->hasProductWithName(
             $this->responseChecker->getCollection($this->client->getLastResponse()),
-            $name
+            $name,
         ));
     }
 
@@ -285,9 +285,9 @@ final class ProductContext implements Context
             $this->hasProductWithPrice(
                 $this->responseChecker->getCollection($this->client->getLastResponse()),
                 $price,
-                $product->getCode()
+                $product->getCode(),
             ),
-            sprintf('There is no product with %s code and %s price', $product->getCode(), $price)
+            sprintf('There is no product with %s code and %s price', $product->getCode(), $price),
         );
     }
 
@@ -300,9 +300,9 @@ final class ProductContext implements Context
             $this->hasProductWithNameAndShortDescription(
                 $this->responseChecker->getCollection($this->client->getLastResponse()),
                 $product->getName(),
-                $shortDescription
+                $shortDescription,
             ),
-            sprintf('There is no product with %s name and %s short description', $product->getName(), $shortDescription)
+            sprintf('There is no product with %s name and %s short description', $product->getName(), $shortDescription),
         );
     }
 
@@ -345,7 +345,7 @@ final class ProductContext implements Context
 
         $defaultVariantPrice = $this->responseChecker->getValue(
             $this->client->showByIri($product['defaultVariant']),
-            'price'
+            'price',
         );
 
         Assert::same($product['name'], $name);
@@ -372,7 +372,7 @@ final class ProductContext implements Context
 
         $defaultVariantPrice = $this->responseChecker->getValue(
             $this->client->showByIri($product['defaultVariant']),
-            'price'
+            'price',
         );
 
         Assert::same($product['name'], $name);
@@ -387,7 +387,7 @@ final class ProductContext implements Context
         Assert::same(
             count($this->responseChecker->getCollection($this->client->getLastResponse())),
             $count,
-            'Number of products from response is different then expected'
+            'Number of products from response is different then expected',
         );
     }
 
@@ -415,7 +415,7 @@ final class ProductContext implements Context
         Assert::false($this->responseChecker->hasValue(
             $this->client->getLastResponse(),
             'name',
-            $product->getTranslation($localeCode)->getName()
+            $product->getTranslation($localeCode)->getName(),
         ));
     }
 
@@ -473,7 +473,7 @@ final class ProductContext implements Context
         $response = $this->client->getLastResponse();
 
         $defaultVariantResponse = $this->client->showByIri(
-            $this->responseChecker->getValue($response, 'defaultVariant')
+            $this->responseChecker->getValue($response, 'defaultVariant'),
         );
 
         Assert::same($this->responseChecker->getValue($defaultVariantResponse, 'price'), $price);
@@ -486,7 +486,7 @@ final class ProductContext implements Context
     {
         Assert::same(
             $this->responseChecker->getValue($this->client->getLastResponse(), 'description'),
-            $description
+            $description,
         );
     }
 
@@ -497,7 +497,7 @@ final class ProductContext implements Context
         int $price,
         string $priceType,
         ProductInterface $product,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): void {
         $this->sharedStorage->set('token', null);
         $this->sharedStorage->set('hostname', $channel->getHostname());
@@ -507,7 +507,7 @@ final class ProductContext implements Context
             [$this->responseChecker->getResponseContent($this->client->show(Resources::PRODUCTS, $product->getCode()))],
             $price,
             null,
-            StringInflector::nameToCamelCase($priceType)
+            StringInflector::nameToCamelCase($priceType),
         ));
     }
 
@@ -567,7 +567,7 @@ final class ProductContext implements Context
         array $products,
         int $price,
         ?string $productCode = null,
-        string $priceType = 'price'
+        string $priceType = 'price',
     ): bool {
         foreach ($products as $product) {
             if ($productCode !== null && $product['code'] !== $productCode) {
@@ -680,7 +680,7 @@ final class ProductContext implements Context
     private function hasAssociationsWithProducts(
         array $associationsIris,
         string $productAssociationTypeName,
-        array $products
+        array $products,
     ): bool {
         try {
             $associatedProducts = $this->provideAssociatedProductsOfAssociationTypeName($associationsIris, $productAssociationTypeName);
@@ -699,7 +699,7 @@ final class ProductContext implements Context
 
     private function provideAssociatedProductsOfAssociationTypeName(
         array $associationsIris,
-        string $productAssociationTypeName
+        string $productAssociationTypeName,
     ): array {
         foreach ($associationsIris as $associationIri) {
             $associationResponse = $this->client->showByIri($associationIri);
